@@ -1,0 +1,99 @@
+[
+    {
+      "skillId": 1,
+      "skillName": "Beginner Guitar Lessons",
+      "providerName": "Alex Martin",
+      "providerEmail": "alex@skillswap.com",
+      "price": 20,
+      "rating": 4.8,
+      "slotsAvailable": 3,
+      "description": "Learn the fundamentals of acoustic guitar from scratch. Perfect for complete beginners who want to start their musical journey. We'll cover basic chords, strumming patterns, and simple songs to get you playing in no time.",
+      "image": "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=800&q=80",
+      "category": "Music"
+    },
+    {
+      "skillId": 2,
+      "skillName": "Spoken English Practice",
+      "providerName": "Sara Hossain",
+      "providerEmail": "sara@skillswap.com",
+      "price": 10,
+      "rating": 4.6,
+      "slotsAvailable": 5,
+      "description": "Improve your conversational English skills through engaging practice sessions. Ideal for non-native speakers looking to build confidence and fluency in everyday communication.",
+      "image": "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800&q=80",
+      "category": "Language"
+    },
+    {
+      "skillId": 3,
+      "skillName": "Web Development Bootcamp",
+      "providerName": "Michael Chen",
+      "providerEmail": "michael@skillswap.com",
+      "price": 35,
+      "rating": 4.9,
+      "slotsAvailable": 2,
+      "description": "Master modern web development with HTML, CSS, JavaScript, and React. Build real-world projects and learn industry best practices from an experienced developer.",
+      "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80",
+      "category": "Technology"
+    },
+    {
+      "skillId": 4,
+      "skillName": "Yoga for Beginners",
+      "providerName": "Emma Rodriguez",
+      "providerEmail": "emma@skillswap.com",
+      "price": 15,
+      "rating": 4.7,
+      "slotsAvailable": 8,
+      "description": "Start your wellness journey with beginner-friendly yoga sessions. Learn proper breathing techniques, basic poses, and mindfulness practices for better health and flexibility.",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80",
+      "category": "Fitness"
+    },
+    {
+      "skillId": 5,
+      "skillName": "Digital Photography Basics",
+      "providerName": "David Kumar",
+      "providerEmail": "david@skillswap.com",
+      "price": 25,
+      "rating": 4.8,
+      "slotsAvailable": 4,
+      "description": "Unlock your creative potential with digital photography. Learn composition, lighting, camera settings, and photo editing to capture stunning images.",
+      "image": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80",
+      "category": "Arts"
+    },
+    {
+      "skillId": 6,
+      "skillName": "Cooking Italian Cuisine",
+      "providerName": "Sofia Marino",
+      "providerEmail": "sofia@skillswap.com",
+      "price": 30,
+      "rating": 4.9,
+      "slotsAvailable": 6,
+      "description": "Master authentic Italian cooking techniques and recipes. From homemade pasta to classic sauces, learn to create delicious Italian dishes that will impress everyone.",
+      "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80",
+      "category": "Culinary"
+    },
+    {
+      "skillId": 7,
+      "skillName": "Spanish Language Basics",
+      "providerName": "Carlos Mendez",
+      "providerEmail": "carlos@skillswap.com",
+      "price": 18,
+      "rating": 4.7,
+      "slotsAvailable": 7,
+      "description": "Start speaking Spanish with confidence! Learn essential vocabulary, grammar, and conversational phrases through interactive lessons and practical exercises.",
+      "image": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80",
+      "category": "Language"
+    },
+    {
+      "skillId": 8,
+      "skillName": "Graphic Design Fundamentals",
+      "providerName": "Jessica Lee",
+      "providerEmail": "jessica@skillswap.com",
+      "price": 28,
+      "rating": 4.8,
+      "slotsAvailable": 5,
+      "description": "Learn the principles of visual design and master tools like Adobe Photoshop and Illustrator. Create stunning graphics, logos, and digital artwork.",
+      "image": "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&q=80",
+      "category": "Design"
+    }
+  ]
+  
