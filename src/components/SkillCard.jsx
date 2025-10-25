@@ -16,7 +16,7 @@ const SkillCard = ({ skill, index = 0 }) => {
 
   return (
     <div 
-      className="group h-full animate-fade-in"
+      className="group h-full animate-fade-in "
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
