@@ -36,7 +36,7 @@ const SkillDetails = () => {
   // ✅ Simple loader
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -92,7 +92,8 @@ const SkillDetails = () => {
       variants={pageContainerVariants}
       initial="hidden"
       animate="visible"
-      className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-100 py-10 md:py-16 overflow-hidden"
+      // CHANGED: Setting the background to a light gray, professional gradient
+      className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-100 to-gray-200 py-10 md:py-16 overflow-hidden" 
     >
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Back Button */}
