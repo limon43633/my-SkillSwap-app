@@ -1,23 +1,33 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaKey } from 'react-icons/fa';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../firebase.config'; // Updated with .js
 
 const ForgetPassword = () => {
   const location = useLocation();
   const [email, setEmail] = useState(location.state?.email || '');
+  const [loading, setLoading] = useState(false);
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
-    
-    if (email) {
+    setLoading(true);
+    try {
+      if (!email) {
+        throw new Error('Please enter your email address');
+      }
+      await sendPasswordResetEmail(auth, email);
       toast.success('Password reset email sent! Check your inbox.');
       
       setTimeout(() => {
         window.open('https://mail.google.com', '_blank');
       }, 1000);
-    } else {
-      toast.error('Please enter your email address');
+    } catch (error) {
+      console.error('Reset error:', error);
+      toast.error(error.message || 'Failed to send reset email. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,6 +66,7 @@ const ForgetPassword = () => {
                   className="w-full pl-9 pr-3 py-2 bg-white/5 border border-gray-500/50 rounded-md text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 outline-none transition-all text-sm"
                   placeholder="Your email"
                   required
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -63,10 +74,11 @@ const ForgetPassword = () => {
             {/* Reset Button */}
             <button
               type="submit"
-              className="w-full relative bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 rounded-md text-sm overflow-hidden group"
+              disabled={loading}
+              className="w-full relative bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 rounded-md text-sm overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              <span className="relative z-10">Reset Password</span>
+              <span className="relative z-10">{loading ? 'Sending email...' : 'Reset Password'}</span>
             </button>
           </form>
 
@@ -84,7 +96,7 @@ const ForgetPassword = () => {
           {/* Info Box */}
           <div className="bg-blue-900/20 border border-blue-500/20 rounded-lg p-3">
             <p className="text-xs text-blue-200">
-              <strong>Note:</strong> If you don’t receive an email within a few minutes, check your spam folder or try again.
+              <strong>Note:</strong> If you don't receive an email within a few minutes, check your spam folder or try again.
             </p>
           </div>
         </div>

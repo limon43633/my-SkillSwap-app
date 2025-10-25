@@ -1,3 +1,4 @@
+// src/AppRouter.jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Home from '../pages/Home/Home';
@@ -10,6 +11,11 @@ import UpdateProfile from '../pages/Profile/UpdateProfile';
 import ProtectedRoute from '../components/ProtectedRoute';
 import NotFoundPage from '../pages/ NotFoundPage';
 import ViewAllSkillPage from '../pages/Skills/ViewAllSkillPage';
+
+// CORRECTED: Import BookSessionPage from its containing folder/file.
+// Assuming your file structure has BookSessionPage.jsx and BookSessionForm.jsx side-by-side, 
+// the import should look like this (or whatever the path to BookSessionPage.jsx is):
+import BookSessionForm from '../pages/Skills/BookSessionForm'; // 💡 This should be the correct path
 
 const AppRouter = () => {
   return (
@@ -32,6 +38,18 @@ const AppRouter = () => {
               </ProtectedRoute>
             } 
           />
+          
+          {/* Book session page (protected) */}
+          <Route
+            path="skill/:id/book"
+            element={
+              <ProtectedRoute>
+                {/* BookSessionPage is now the correctly imported component */}
+                <BookSessionForm /> 
+              </ProtectedRoute>
+            }
+          />
+
           <Route 
             path="my-profile" 
             element={

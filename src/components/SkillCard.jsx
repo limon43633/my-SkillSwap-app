@@ -1,7 +1,19 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaStar, FaDollarSign, FaUsers } from 'react-icons/fa';
+import { auth } from '../firebase.config'; // Adjust path based on location
 
 const SkillCard = ({ skill, index = 0 }) => {
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    if (auth.currentUser) {
+      navigate(`/skill/${skill.skillId}`);
+    } else {
+      // Navigate to login and pass the intended skill details page in state
+      navigate('/login', { state: { from: `/skill/${skill.skillId}` } });
+    }
+  };
+
   return (
     <div 
       className="group h-full animate-fade-in"
@@ -72,14 +84,12 @@ const SkillCard = ({ skill, index = 0 }) => {
           </div>
           
           {/* Button */}
-          <Link 
-            to={`/skill/${skill.skillId}`}
-            className="block w-full"
+          <button
+            onClick={handleViewDetails}
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105 active:scale-95"
           >
-            <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105 active:scale-95">
-              View Details
-            </button>
-          </Link>
+            View Details
+          </button>
         </div>
       </div>
     </div>

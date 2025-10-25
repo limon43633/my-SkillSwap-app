@@ -1,10 +1,11 @@
 import { Navigate, useLocation } from 'react-router-dom';
+import { auth } from '../firebase.config'; // Adjust path based on location
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   
-  // Placeholder for auth - will be connected to Firebase later
-  const user = null; // Replace with actual auth context
+  // Check if user is authenticated using Firebase
+  const user = auth.currentUser;
   
   if (!user) {
     // Redirect to login and save the attempted location

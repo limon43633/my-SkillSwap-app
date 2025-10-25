@@ -1,24 +1,35 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaEye, FaEyeSlash, FaLock, FaEnvelope } from 'react-icons/fa';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase.config'; // Adjust path based on location
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   
   const from = location.state?.from?.pathname || '/';
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email && password) {
+    setLoading(true);
+    try {
+      if (!email || !password) {
+        throw new Error('Please enter valid credentials');
+      }
+      await signInWithEmailAndPassword(auth, email, password);
       toast.success('Login successful!');
       navigate(from, { replace: true });
-    } else {
-      toast.error('Please enter valid credentials');
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error(error.message || 'Login failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +73,7 @@ const Login = () => {
                   className="w-full pl-9 pr-3 py-2 bg-white/5 border border-gray-500/50 rounded-md text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 outline-none transition-all text-sm"
                   placeholder="Your email"
                   required
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -80,11 +92,13 @@ const Login = () => {
                   className="w-full pl-9 pr-10 py-2 bg-white/5 border border-gray-500/50 rounded-md text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 outline-none transition-all text-sm"
                   placeholder="Your password"
                   required
+                  disabled={loading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                  disabled={loading}
                 >
                   {showPassword ? <FaEyeSlash className="text-sm" /> : <FaEye className="text-sm" />}
                 </button>
@@ -105,17 +119,18 @@ const Login = () => {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full relative bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 rounded-md text-sm overflow-hidden group"
+              disabled={loading}
+              className="w-full relative bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 rounded-md text-sm overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              <span className="relative z-10">Login</span>
+              <span className="relative z-10">{loading ? 'Signing in...' : 'Login'}</span>
             </button>
           </form>
 
           {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full"></div>
+              <div className="w-full border-t border-gray-500/50"></div>
             </div>
             <div className="relative flex justify-center text-xs">
               <span className="px-3 bg-transparent text-gray-300">Or sign in with</span>
@@ -138,7 +153,7 @@ const Login = () => {
 
           {/* Sign Up Link */}
           <p className="text-center text-gray-300 text-xs">
-            New here?{' '}
+            Don't have an account?{' '}
             <Link 
               to="/signup" 
               className="text-blue-400 hover:text-blue-300 font-medium hover:underline"

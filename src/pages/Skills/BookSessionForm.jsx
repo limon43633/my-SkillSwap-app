@@ -1,125 +1,193 @@
+// src/pages/Skills/BookSessionForm.jsx
 import { useState } from 'react';
-import { FaUser, FaEnvelope, FaCheckCircle } from 'react-icons/fa';
-import toast from 'react-hot-toast';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaArrowLeft, FaCalendarAlt, FaUser, FaEnvelope, FaClock, FaCommentDots, FaCheckCircle } from 'react-icons/fa';
+import skillsData from '../../data/skills.json';
 
-const BookSessionForm = ({ skill, onClose }) => {
+const BookSessionForm = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const skill = skillsData.find((s) => s.skillId === parseInt(id, 10));
+
   const [formData, setFormData] = useState({
     name: '',
-    email: ''
+    email: '',
+    date: '',
+    time: '',
+    notes: '',
   });
 
+  const [submitted, setSubmitted] = useState(false);
+
+  if (!skill) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-xl shadow-lg p-8 max-w-md text-center border border-gray-100"
+        >
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Skill Not Found</h2>
+          <p className="text-gray-600 mb-6">Please verify the skill link and try again.</p>
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+          >
+            <FaArrowLeft /> Back to Home
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (formData.name && formData.email) {
-      // Show success toast
-      toast.success(`Session booked successfully with ${skill.providerName}!`, {
-        duration: 4000,
-        icon: '🎉'
-      });
-      
-      // Clear form
-      setFormData({
-        name: '',
-        email: ''
-      });
-      
-      // Close form after a delay
-      setTimeout(() => {
-        onClose();
-      }, 1500);
-    } else {
-      toast.error('Please fill in all fields');
-    }
+    setSubmitted(true);
+    setTimeout(() => {
+      navigate(`/skill/${skill.skillId}`);
+    }, 2000);
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl mx-auto">
-      <div className="text-center mb-6">
-        <div className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-full mb-4">
-          <FaCheckCircle className="text-3xl text-white" />
-        </div>
-        <h3 className="text-2xl font-bold gradient-text mb-2">Book Your Session</h3>
-        <p className="text-gray-600">
-          Fill in your details to book a session for <span className="font-semibold">{skill.skillName}</span>
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-10 px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-xl mx-auto bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-6 border border-white/30"
+      >
+        {/* Back Button */}
+        <Link
+          to={`/skill/${skill.skillId}`}
+          className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium mb-5 transition-colors duration-200"
+        >
+          <FaArrowLeft /> Back to {skill.skillName}
+        </Link>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Name Field */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Your Name
-          </label>
-          <div className="relative">
-            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
-              placeholder="Enter your full name"
-              required
-            />
-          </div>
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-extrabold text-gray-900">
+            Book a <span className="text-indigo-600">Session</span>
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Master <span className="font-semibold text-indigo-600">{skill.skillName}</span> with{' '}
+            <span className="font-semibold text-indigo-600">{skill.providerName}</span>.
+          </p>
         </div>
 
-        {/* Email Field */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Your Email
-          </label>
-          <div className="relative">
-            <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-        </div>
-
-        {/* Session Info */}
-        <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-4 border-2 border-purple-200">
-          <h4 className="font-semibold text-gray-800 mb-2">Session Details:</h4>
-          <ul className="space-y-1 text-sm text-gray-700">
-            <li><strong>Skill:</strong> {skill.skillName}</li>
-            <li><strong>Provider:</strong> {skill.providerName}</li>
-            <li><strong>Price:</strong> ${skill.price} per session</li>
-            <li><strong>Category:</strong> {skill.category}</li>
-          </ul>
-        </div>
-
-        {/* Buttons */}
-        <div className="flex space-x-4">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+        {/* Success Message */}
+        {submitted ? (
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-center py-10"
           >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="flex-1 btn-primary-custom"
+            <FaCheckCircle className="text-green-500 text-5xl mx-auto mb-3" />
+            <h3 className="text-xl font-bold text-gray-800 mb-1">Booking Confirmed!</h3>
+            <p className="text-gray-600">Redirecting you back to the skill page...</p>
+          </motion.div>
+        ) : (
+          <motion.form
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="space-y-5"
           >
-            Confirm Booking
-          </button>
-        </div>
-      </form>
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <FaUser className="text-indigo-500" /> Full Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                placeholder="Enter your full name"
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <FaEnvelope className="text-indigo-500" /> Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="Enter your email address"
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+              />
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <FaCalendarAlt className="text-indigo-500" /> Preferred Date
+              </label>
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+              />
+            </div>
+
+            {/* Time */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <FaClock className="text-indigo-500" /> Preferred Time
+              </label>
+              <input
+                type="time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+              />
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <FaCommentDots className="text-indigo-500" /> Additional Notes
+              </label>
+              <textarea
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Any special requests or questions?"
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"
+              />
+            </div>
+
+            {/* Submit */}
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-purple-500/40 transition-all duration-300"
+            >
+              Confirm Booking
+            </motion.button>
+          </motion.form>
+        )}
+      </motion.div>
     </div>
   );
 };
