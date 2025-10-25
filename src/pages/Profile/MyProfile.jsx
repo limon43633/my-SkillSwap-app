@@ -4,8 +4,8 @@ import { FaEdit, FaEnvelope, FaUser } from 'react-icons/fa';
 const MyProfile = () => {
   // Placeholder user data - will be replaced with Firebase auth context
   const user = {
-    displayName: 'John Doe',
-    email: 'john.doe@example.com',
+    displayName: 'Hassibur rahman',
+    email: 'md9178558@gmail.com',
     photoURL: 'https://i.pravatar.cc/300?u=john.doe@example.com'
   };
 

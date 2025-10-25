@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import AOS from 'aos';
 import HeroSection from './HeroSection';
 import PopularSkills from './PopularSkills';
@@ -7,6 +8,13 @@ import HowItWorks from './HowItWorks';
 
 const Home = () => {
   useEffect(() => {
+    // Smooth scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+
+    // Initialize AOS animations
     AOS.init({
       duration: 800,
       once: true,
@@ -15,12 +23,16 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <HeroSection />
       <PopularSkills />
       <TopProviders />
       <HowItWorks />
-      
+
       {/* Extra Section - Community Stats */}
       <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <div className="container mx-auto px-4">
@@ -44,7 +56,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 };
 

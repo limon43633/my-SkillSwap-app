@@ -1,8 +1,16 @@
 // src/pages/Skills/BookSessionForm.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaArrowLeft, FaCalendarAlt, FaUser, FaEnvelope, FaClock, FaCommentDots, FaCheckCircle } from 'react-icons/fa';
+import {
+  FaArrowLeft,
+  FaCalendarAlt,
+  FaUser,
+  FaEnvelope,
+  FaClock,
+  FaCommentDots,
+  FaCheckCircle,
+} from 'react-icons/fa';
 import skillsData from '../../data/skills.json';
 
 const BookSessionForm = () => {
@@ -20,6 +28,11 @@ const BookSessionForm = () => {
 
   const [submitted, setSubmitted] = useState(false);
 
+  // ✅ Scroll to top when the page loads
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   if (!skill) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-white">
@@ -28,8 +41,12 @@ const BookSessionForm = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-xl shadow-lg p-8 max-w-md text-center border border-gray-100"
         >
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Skill Not Found</h2>
-          <p className="text-gray-600 mb-6">Please verify the skill link and try again.</p>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+            Skill Not Found
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Please verify the skill link and try again.
+          </p>
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-2 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200"
@@ -75,8 +92,15 @@ const BookSessionForm = () => {
             Book a <span className="text-indigo-600">Session</span>
           </h1>
           <p className="text-gray-600 mt-2">
-            Master <span className="font-semibold text-indigo-600">{skill.skillName}</span> with{' '}
-            <span className="font-semibold text-indigo-600">{skill.providerName}</span>.
+            Master{' '}
+            <span className="font-semibold text-indigo-600">
+              {skill.skillName}
+            </span>{' '}
+            with{' '}
+            <span className="font-semibold text-indigo-600">
+              {skill.providerName}
+            </span>
+            .
           </p>
         </div>
 
@@ -88,8 +112,12 @@ const BookSessionForm = () => {
             className="text-center py-10"
           >
             <FaCheckCircle className="text-green-500 text-5xl mx-auto mb-3" />
-            <h3 className="text-xl font-bold text-gray-800 mb-1">Booking Confirmed!</h3>
-            <p className="text-gray-600">Redirecting you back to the skill page...</p>
+            <h3 className="text-xl font-bold text-gray-800 mb-1">
+              Booking Confirmed!
+            </h3>
+            <p className="text-gray-600">
+              Redirecting you back to the skill page...
+            </p>
           </motion.div>
         ) : (
           <motion.form
