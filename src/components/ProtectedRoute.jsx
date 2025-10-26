@@ -6,7 +6,6 @@ const ProtectedRoute = ({ children }) => {
   const { user, authLoading } = useAuth();
   const location = useLocation();
 
-  // Wait for Firebase to finish restoring user session
   if (authLoading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100 via-white to-purple-100 relative overflow-hidden">

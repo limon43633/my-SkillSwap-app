@@ -106,7 +106,7 @@ const Navbar = () => {
     exit: { opacity: 0, scale: 0.9, y: -20, transition: { duration: 0.3 } },
   };
 
-  // 🪶 Smoothened Mobile Menu Animation
+  //  Smoothened Mobile Menu Animation
   const mobileMenuVariants = {
     closed: {
       opacity: 0,
@@ -161,7 +161,7 @@ const Navbar = () => {
             {navLinks}
           </ul>
 
-          {/* 🔹 Auth Section (Desktop) */}
+          {/*  Auth Section (Desktop) */}
           <motion.div
             className="hidden md:flex items-center space-x-3"
             variants={authButtonVariants}
