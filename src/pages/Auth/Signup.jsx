@@ -212,7 +212,7 @@ const Signup = () => {
           {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full "></div>
+              <div className="w-full"></div>
             </div>
             <div className="relative flex justify-center text-xs">
               <span className="px-3 bg-transparent text-gray-300">Or sign up with</span>

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { FaEdit, FaEnvelope, FaUser } from 'react-icons/fa';
 
 const MyProfile = () => {
-  // Placeholder user data - will be replaced with Firebase auth context
+
   const user = {
     displayName: 'Hassibur rahman',
     email: 'md9178558@gmail.com',

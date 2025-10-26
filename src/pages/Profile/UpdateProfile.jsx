@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 const UpdateProfile = () => {
   const navigate = useNavigate();
   
-  // Placeholder user data - will be replaced with Firebase auth context
   const [formData, setFormData] = useState({
     displayName: 'John Doe',
     photoURL: 'https://i.pravatar.cc/300?u=john.doe@example.com'
@@ -23,7 +22,7 @@ const UpdateProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Placeholder for Firebase updateProfile()
+    
     if (formData.displayName && formData.photoURL) {
       toast.success('Profile updated successfully!', {
         icon: '✅'

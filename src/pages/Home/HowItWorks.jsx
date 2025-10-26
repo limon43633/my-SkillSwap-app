@@ -244,13 +244,13 @@ const HowItWorks = () => {
               boxShadow: '0 15px 40px rgba(139, 92, 246, 0.25)' // Softer shadow
             }}
             whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }} // Smoother transition
+            transition={{ duration: 0.3, ease: 'easeOut' }} //  transition
           >
             <motion.span
               className="absolute inset-0 bg-gradient-to-r from-purple-700 to-blue-700"
               initial={{ x: '-100%' }}
               whileHover={{ x: '100%' }}
-              transition={{ duration: 0.5, ease: 'easeInOut' }} // Smoother gradient slide
+              transition={{ duration: 0.5, ease: 'easeInOut' }}  
             />
             <span className="relative z-10">Get Started Today →</span>
           </motion.button>
