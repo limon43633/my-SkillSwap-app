@@ -1,5 +1,5 @@
 // src/pages/Skills/BookSessionForm.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -12,10 +12,12 @@ import {
   FaCheckCircle,
 } from 'react-icons/fa';
 import skillsData from '../../data/skills.json';
+import { useAuth } from '../../context/AuthContext'; // Import useAuth to check auth status
 
 const BookSessionForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user, authLoading } = useAuth(); // Get auth state from context
   const skill = skillsData.find((s) => s.skillId === parseInt(id, 10));
 
   const [formData, setFormData] = useState({
@@ -28,10 +30,25 @@ const BookSessionForm = () => {
 
   const [submitted, setSubmitted] = useState(false);
 
-  // ✅ Scroll to top when the page loads
+  // Scroll to top when the page loads
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+
+  // Show loading state while auth is being checked
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-white">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-gray-600 text-lg"
+        >
+          Checking authentication...
+        </motion.div>
+      </div>
+    );
+  }
 
   if (!skill) {
     return (
@@ -139,7 +156,7 @@ const BookSessionForm = () => {
                 onChange={handleChange}
                 required
                 placeholder="Enter your full name"
-                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder-gray-400"
               />
             </div>
 
@@ -155,7 +172,7 @@ const BookSessionForm = () => {
                 onChange={handleChange}
                 required
                 placeholder="Enter your email address"
-                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder-gray-400"
               />
             </div>
 
@@ -170,7 +187,7 @@ const BookSessionForm = () => {
                 value={formData.date}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder-gray-400"
               />
             </div>
 
@@ -185,7 +202,7 @@ const BookSessionForm = () => {
                 value={formData.time}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder-gray-400"
               />
             </div>
 
@@ -200,7 +217,7 @@ const BookSessionForm = () => {
                 onChange={handleChange}
                 rows="3"
                 placeholder="Any special requests or questions?"
-                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none placeholder-gray-400"
               />
             </div>
 

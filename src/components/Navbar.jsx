@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase.config';
@@ -14,7 +14,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
 
-  // Transform values based on scroll for glassy effect
+  // Glassy scroll transform
   const navbarBg = useTransform(
     scrollY,
     [0, 150],
@@ -32,7 +32,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 🔹 Logout Handler
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -76,27 +75,19 @@ const Navbar = () => {
     </>
   );
 
-  // 🌀 Shimmer animation placeholder for auth buttons
   const AuthLoadingPlaceholder = () => (
     <div className="h-9 w-24 rounded-lg bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse" />
   );
 
-  // Animation variants for navbar entrance
   const navbarVariants = {
     hidden: { y: -100, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-        damping: 15,
-        duration: 0.6,
-      },
+      transition: { type: 'spring', stiffness: 100, damping: 15, duration: 0.6 },
     },
   };
 
-  // Animation variants for auth buttons transition
   const authButtonVariants = {
     initial: { opacity: 0, scale: 0.9, y: 20 },
     enter: {
@@ -115,37 +106,29 @@ const Navbar = () => {
     exit: { opacity: 0, scale: 0.9, y: -20, transition: { duration: 0.3 } },
   };
 
-  // ✅ MOBILE MENU TRANSITION REVISION (Max-Height for smooth slide)
+  // 🪶 Smoothened Mobile Menu Animation
   const mobileMenuVariants = {
-    closed: { 
-      opacity: 0, 
-      maxHeight: 0, // Animate from 0 height
-      paddingTop: 0,
-      paddingBottom: 0,
-      transition: { 
-        duration: 0.3, 
-        ease: "easeInOut",
-        when: "afterChildren" // Let children fade out first
-      } 
+    closed: {
+      opacity: 0,
+      y: -20,
+      transition: { duration: 0.35, ease: 'easeInOut' },
     },
     open: {
       opacity: 1,
-      maxHeight: '500px', // Use a generous max-height for a smooth slide
-      paddingTop: '1.5rem', // pt-6
-      paddingBottom: '1rem', // pb-4
+      y: 0,
       transition: {
         type: 'spring',
-        stiffness: 100,
-        damping: 20,
-        duration: 0.7,
-        when: 'beforeChildren', // Container animates before children
+        stiffness: 80,
+        damping: 18,
+        duration: 0.6,
+        staggerChildren: 0.08,
       },
     },
   };
 
-  const mobileButtonVariants = {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: 'easeOut' } },
+  const mobileLinkVariants = {
+    closed: { opacity: 0, y: -10 },
+    open: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
   };
 
   return (
@@ -231,71 +214,72 @@ const Navbar = () => {
           <motion.button
             className="md:hidden text-3xl text-purple-600"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            variants={mobileButtonVariants}
-            initial="initial"
-            animate="animate"
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.2 }}
           >
             {isMenuOpen ? <FaTimes /> : <FaBars />}
           </motion.button>
         </div>
 
-        {/* Mobile Menu (Using framer-motion's 'animate' to drive open/closed) */}
-        <motion.div
-          className="md:hidden flex flex-col space-y-4 border-t bg-white/10 backdrop-blur-md rounded-b-lg shadow-lg overflow-hidden" // ✅ Added overflow-hidden
-          variants={mobileMenuVariants}
-          initial="closed"
-          animate={isMenuOpen ? "open" : "closed"} // ✅ Explicit control
-        >
-          {/* Menu Links */}
-          <motion.ul
-            className="flex flex-col space-y-4 px-4"
-          >
-            {navLinks}
-          </motion.ul>
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              key="mobile-menu"
+              className="md:hidden flex flex-col border-t bg-white/10 backdrop-blur-md rounded-b-2xl shadow-lg overflow-hidden"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={mobileMenuVariants}
+            >
+              <motion.ul
+                className="flex flex-col space-y-4 px-4 pt-6 pb-4 text-lg font-medium"
+              >
+                {Array.isArray(navLinks.props.children)
+                  ? navLinks.props.children.map((link, i) => (
+                      <motion.li key={i} variants={mobileLinkVariants}>
+                        {link}
+                      </motion.li>
+                    ))
+                  : navLinks}
+              </motion.ul>
 
-          {/* Mobile Auth Section */}
-          {loading ? (
-            <div className="h-12 w-full rounded-lg bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse mx-4" />
-          ) : user ? (
-            <motion.div
-              className="px-4"
-              variants={mobileButtonVariants}
-            >
-              <motion.button
-                onClick={handleLogout}
-                className="relative w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800 transition-all duration-300 overflow-hidden group"
-                whileHover={{ scale: 1.05, boxShadow: '0 4px 15px rgba(239, 68, 68, 0.4)' }}
-                whileTap={{ scale: 0.98 }}
+              {/* Mobile Auth Section */}
+              <motion.div
+                className="px-4 pb-6"
+                variants={mobileLinkVariants}
               >
-                <span className="relative z-10">Logout</span>
-                <motion.span
-                  className="absolute inset-0 bg-white/10"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
-                />
-              </motion.button>
-            </motion.div>
-          ) : (
-            <motion.div
-              className="px-4 space-y-3"
-              variants={mobileButtonVariants}
-            >
-              <Link
-                to="/login"
-                className="block text-center px-4 py-2 rounded-lg border-2 border-purple-600 text-purple-600 hover:bg-purple-50 transition-colors"
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="block text-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-colors"
-              >
-                Sign Up
-              </Link>
+                {loading ? (
+                  <div className="h-12 w-full rounded-lg bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse" />
+                ) : user ? (
+                  <motion.button
+                    onClick={handleLogout}
+                    className="w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800 transition-all duration-300"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Logout
+                  </motion.button>
+                ) : (
+                  <div className="space-y-3">
+                    <Link
+                      to="/login"
+                      className="block text-center px-4 py-2 rounded-lg border-2 border-purple-600 text-purple-600 hover:bg-purple-50 transition-colors"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="block text-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-colors"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
+              </motion.div>
             </motion.div>
           )}
-        </motion.div>
+        </AnimatePresence>
       </div>
     </motion.nav>
   );
