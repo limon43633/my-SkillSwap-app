@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { FaStar, FaDollarSign, FaUsers } from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext'; // ✅ use AuthContext
+import { useAuth } from '../context/AuthContext'; //  use AuthContext
 
 const SkillCard = ({ skill, index = 0 }) => {
   const navigate = useNavigate();
